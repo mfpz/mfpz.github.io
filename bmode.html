@@ -16,8 +16,6 @@
 	<h1 id="currentroom"></h1>
 	<button id="ab">Start</button>
 <script>
-	let sw = prompt('Server');
-
 	const currentroom = document.getElementById('currentroom');
 
 	let rooms = [];
@@ -47,10 +45,12 @@
 	  			clearInterval(iv);
 	  			currentroom.innerHTML = 'done';
 	  		}
-	  	}, 2000);
+	  	}, 2400);
 	 }
 
 	function j(a){
+		let sw = '';
+		fetch('https://gartic.io/serverViewer?room=381109').then(re => re.text()).then(dta => sw = dta.slice(14,16));
 		const ws = new WebSocket(`wss://server${sw}.gartic.io/socket.io/?EIO=3&transport=websocket`);
 
 		ws.onopen = () => {
