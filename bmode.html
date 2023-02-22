@@ -1,85 +1,86 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Gartic.io bot</title>
-	<style type="text/css">
-		body{background: #111;text-align: center;color: #eee;font-family: sans-serif;margin-top: 3rem}
-		button{font-size: 18px;padding: 10px 14px;border-radius: 6px;text-align: center;border: none;}
-		button{background-color: #B7B78A;}
-		button:active{transform: scale(0.985);}
-	</style>
-</head>
-<body>
-	<p>V 0.3</p>
-	<h1 id="currentroom"></h1>
-	<button id="ab">Start</button>
-<script>
-	const currentroom = document.getElementById('currentroom');
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Gartic.io bot</title>
+		<style type="text/css">
+			body{background: #111;text-align: center;color: #eee;font-family: sans-serif;margin-top: 3rem}
+			button{font-size: 18px;padding: 10px 14px;border-radius: 6px;text-align: center;border: none;}
+			button{background-color: #B7B78A;}
+			button:active{transform: scale(0.985);}
+		</style>
+	</head>
+	<body>
+		<p>V 0.3</p>
+		<h1 id="currentroom"></h1>
+		<button id="ab">Start</button>
+	<script>
+		const currentroom = document.getElementById('currentroom');
 
-	let rooms = [];
+		let rooms = [];
 
-	let players = [];
-	let ts, x;
+		let players = [];
+		let ts, x;
 
-	let i = 0;
+		let i = 0;
 
-	fetch('https://gartic.io/req/list?search=&language[]=8')
-	.then(res => res.json())
-	.then(dt => {
-		const activerooms = dt.filter(room => room.quant > 0);
-		for(let j = 0; j < activerooms.length; j++){
-			rooms.push(activerooms[j].id);
-		}
-		console.log(rooms);
-	});
+		fetch('https://gartic.io/req/list?search=&language[]=8')
+		.then(res => res.json())
+		.then(dt => {
+			const activerooms = dt.filter(room => room.quant > 0);
+			for(let j = 0; j < activerooms.length; j++){
+				rooms.push(activerooms[j].id);
+			}
+			console.log(rooms);
+		});
 
-	function st(){
-	  	const iv = setInterval(() => {
-	  		if(i != rooms.length){
-	  			j(i);
-	  			currentroom.innerHTML = rooms[i];
-	  			i++;
-	  		} else {
-	  			clearInterval(iv);
-	  			currentroom.innerHTML = 'done';
-	  		}
-	  	}, 2400);
-	 }
+		function st(){
+		  	const iv = setInterval(() => {
+		  		if(i != rooms.length){
+		  			j(i);
+		  			currentroom.innerHTML = rooms[i];
+		  			i++;
+		  		} else {
+		  			clearInterval(iv);
+		  			currentroom.innerHTML = 'done';
+		  		}
+		  	}, 2400);
+		 }
 
-	function j(a){
-		let sw = '';
-		fetch('https://gartic.io/serverViewer?room=381109').then(re => re.text()).then(dta => sw = dta.slice(14,16));
-		const ws = new WebSocket(`wss://server${sw}.gartic.io/socket.io/?EIO=3&transport=websocket`);
+		function j(a){
+			let sw = '';
+			fetch('https://gartic.io/serverViewer?room=381109').then(re => re.text()).then(dta => sw = dta.slice(14,16));
+			console.log(sw);
+			const ws = new WebSocket(`wss://server${sw}.gartic.io/socket.io/?EIO=3&transport=websocket`);
 
-		ws.onopen = () => {
-			ws.send(`42[3,{"v":20000,"nick":"STIgnore‎${Math.floor(Math.random() * 960)}","avatar":0,"sala":"${rooms[a]}"}]`);
-			ws.send(`42[46,1675119253574]`);
-		}
+			ws.onopen = () => {
+				ws.send(`42[3,{"v":20000,"nick":"STIgnore‎${Math.floor(Math.random() * 960)}","avatar":0,"sala":"${rooms[a]}"}]`);
+				ws.send(`42[46,1675119253574]`);
+			}
 
-		ws.onmessage = (m) => {
-			try{
-				const d = JSON.parse(m.data.slice(2));
-				if(d[0] == 5){
-					p = d[2];
-					r = d[5];
-					for(let i = 0; i < r.length; i++){
-						if(!r[i].nick.startsWith('STIgnore‎')){
-							ws.send(`42[45,${p},["${r[i].id}",true]]`);
+			ws.onmessage = (m) => {
+				try{
+					const d = JSON.parse(m.data.slice(2));
+					if(d[0] == 5){
+						p = d[2];
+						r = d[5];
+						for(let i = 0; i < r.length; i++){
+							if(!r[i].nick.startsWith('STIgnore‎')){
+								ws.send(`42[45,${p},["${r[i].id}",true]]`);
+							}
 						}
 					}
-				}
 
-				if(d[0] == 23 && !d[1].nick.startsWith('STIgnore‎')){
-					ws.send(`42[45,${p},["${d[1].id}",true]]`);
-				}
-			} catch(err) {}
-			setTimeout(() => {
-				ws.close();
-			}, 500);
+					if(d[0] == 23 && !d[1].nick.startsWith('STIgnore‎')){
+						ws.send(`42[45,${p},["${d[1].id}",true]]`);
+					}
+				} catch(err) {}
+				setTimeout(() => {
+					ws.close();
+				}, 500);
+			}
 		}
-	}
-</script>
-</body>
-</html>
+	</script>
+	</body>
+	</html>
