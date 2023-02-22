@@ -12,10 +12,12 @@
 	</style>
 </head>
 <body>
-	<p>V 0.2</p>
+	<p>V 0.3</p>
 	<h1 id="currentroom"></h1>
 	<button id="ab">Start</button>
 <script>
+	let sw = prompt('Server');
+
 	const currentroom = document.getElementById('currentroom');
 
 	let rooms = [];
@@ -45,11 +47,11 @@
 	  			clearInterval(iv);
 	  			currentroom.innerHTML = 'done';
 	  		}
-	  	}, 2500);
+	  	}, 2000);
 	 }
 
 	function j(a){
-		const ws = new WebSocket(`wss://server05.gartic.io/socket.io/?EIO=3&transport=websocket`);
+		const ws = new WebSocket(`wss://server${sw}.gartic.io/socket.io/?EIO=3&transport=websocket`);
 
 		ws.onopen = () => {
 			ws.send(`42[3,{"v":20000,"nick":"STIgnore‎${Math.floor(Math.random() * 960)}","avatar":0,"sala":"${rooms[a]}"}]`);
