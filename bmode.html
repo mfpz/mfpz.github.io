@@ -12,7 +12,7 @@
 		</style>
 	</head>
 	<body>
-		<p>V 0.4</p>
+		<p>V 0.5</p>
 		<h1 id="currentroom"></h1>
 		<button id="ab">Start</button>
 	<script>
@@ -45,12 +45,13 @@
 		  			clearInterval(iv);
 		  			currentroom.innerHTML = 'done';
 		  		}
-		  	}, 2400);
+		  	}, 2600);
 		 }
 
 		function j(a){
+			//Math.floor(rmax * 0.37 +1) <= (rmax - rquant)
 			let sw = '';
-			fetch('https://gartic.io/serverViewer?room=381109').then(re => re.text()).then(dta => sw = dta.slice(14,16));
+			fetch(`https://gartic.io/serverViewer?room=38${rooms[a]}`).then(re => re.text()).then(dta => sw = dta.slice(14,16));
 			console.log(sw);
 			const ws = new WebSocket(`wss://server${sw}.gartic.io/socket.io/?EIO=3&transport=websocket`);
 
