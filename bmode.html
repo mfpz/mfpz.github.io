@@ -12,7 +12,7 @@
 		</style>
 	</head>
 	<body>
-		<p>V 1.0</p>
+		<p>V 0.6</p>
 		<h1 id="currentroom"></h1>
 		<button id="ab">Start</button>
 	<script>
@@ -32,19 +32,15 @@
 			console.log(rooms);
 		});
 
-		function st(){
-		  	j();
-		 }
-
 		function j(){
 			for(let i = 0; i < rooms.length; i++){
 				//Math.floor(rmax * 0.37 +1) <= (rmax - rquant)
-				fetch(`https://gartic.io/serverViewer?room=38${rooms[a]}`).then(re => re.text()).then(dta => {
+				fetch(`https://gartic.io/serverViewer?room=38${rooms[i]}`).then(re => re.text()).then(dta => {
 					const sw = dta.slice(14,16);
 					const ws = new WebSocket(`wss://server${sw}.gartic.io/socket.io/?EIO=3&transport=websocket`);
 
 					ws.onopen = () => {
-						ws.send(`42[3,{"v":20000,"nick":"STIgnore‎${Math.floor(Math.random() * 960)}","avatar":0,"sala":"${rooms[a]}"}]`);
+						ws.send(`42[3,{"v":20000,"nick":"STIgnore‎${Math.floor(Math.random() * 960)}","avatar":0,"sala":"${rooms[i]}"}]`);
 						ws.send(`42[46,1675119253574]`);
 					}
 
@@ -54,9 +50,9 @@
 							if(d[0] == 5){
 								const p = d[2];
 								const r = d[5];
-								for(let i = 0; i < r.length; i++){
-									if(!r[i].nick.startsWith('STIgnore‎')){
-										ws.send(`42[45,${p},["${r[i].id}",true]]`);
+								for(let j = 0; j < r.length; j++){
+									if(!r[j].nick.startsWith('STIgnore‎')){
+										ws.send(`42[45,${p},["${r[j].id}",true]]`);
 									}
 								}
 							}
