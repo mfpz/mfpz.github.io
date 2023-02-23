@@ -64,15 +64,17 @@
 		});
 	} f();
 
-	const iv = setInterval(() => {
-		if(i != rooms.length){
-			x569.value = rooms[i];
-			x791.click();
-			i++;
-		} else {
-			f();
-		}
-	}, 4000);
+	function x(){
+		const iv = setInterval(() => {
+			if(i != rooms.length){
+				x569.value = rooms[i];
+				x791.click();
+				i++;
+			} else {
+				f();
+			}
+		}, 2500);
+	}
 
 	function j(a, b){
 		if(ws != '' && ws.readyState == 1){
