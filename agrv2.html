@@ -52,19 +52,20 @@
 				}
 			}
 		});
-	}
+	} f();
 
 	function dx(){
 		const iv = setInterval(() => {
 			if(i != rooms.length){
 				x569.value = rooms[i];
+				x569.dispatchEvent(new Event('change'));
 				x791.click();
 				i++;
 			} else {
 				f();
 				i = 0;
 			}
-		}, 2500);
+		}, 3000);
 	}
 
 	function j(b){
