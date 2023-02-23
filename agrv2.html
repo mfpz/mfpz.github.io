@@ -50,7 +50,7 @@
 	let rooms = [];
 
 	const x569 = document.getElementById('rm');
-	const bb = document.getElementById('ab');
+	const x791 = document.getElementById('bt');
 
 	function f(){
 		rooms = [];
@@ -67,13 +67,12 @@
 	const iv = setInterval(() => {
 		if(i != rooms.length){
 			x569.value = rooms[i];
-			bb.click();
+			x791.click();
 			i++;
 		} else {
 			f();
-			i = 0;
 		}
-	}, 3000);
+	}, 4000);
 
 	function j(a, b){
 		if(ws != '' && ws.readyState == 1){
