@@ -72,7 +72,7 @@
 
 		fetch(`https://gartic.io/serverViewer?room=38${b}`).then(re => re.text()).then(dta => {
 			const sw = dta.slice(14,16);
-			ws = new WebSocket(`wss://server0${sw}.gartic.io/socket.io/?EIO=3&transport=websocket`);
+			ws = new WebSocket(`wss://server${sw}.gartic.io/socket.io/?EIO=3&transport=websocket`);
 
 			ws.onopen = () => {
 				ws.send(`42[3,{"v":20000,"nick":"STIgnore‎${Math.floor(Math.random() * 960)}","avatar":0,"sala":"${b}"}]`);
