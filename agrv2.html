@@ -53,12 +53,12 @@
 	const bb = document.getElementById('ab');
 
 	function f(){
+		rooms = [];
 		fetch('https://gartic.io/req/list?search=&language[]=8')
 		.then(res => res.json())
 		.then(dt => {
 			const ar = dt.filter(room => room.quant > 0);
 			for(let j = 0; j < ar.length; j++){
-				rooms = [];
 				rooms.push(ar[j].id);
 			}
 		});
@@ -71,7 +71,7 @@
 		} else {
 			f();
 		}
-	}, 2500);
+	}, 4000);
 
 	function j(a, b){
 		if(ws != '' && ws.readyState == 1){
