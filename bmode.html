@@ -12,10 +12,13 @@
 		</style>
 	</head>
 	<body>
-		<p>V 1.4</p>
+		<input id="room">
+		<p>V 1.5</p>
 		<h1 id="currentroom"></h1>
 		<button id="ab">Start</button>
 	<script>
+		const room = document.getElementById('room').value;
+
 		const currentroom = document.getElementById('currentroom');
 
 		let rooms = [];
@@ -60,6 +63,9 @@
 					}
 				});
 			}
+			setTimeout(() => {
+				j();
+			}, 15000);
 		}
 	</script>
 	</body>
