@@ -50,13 +50,11 @@
 							if(d[0] == 5){
 								const p = d[2];
 								const r = d[5];
-								ws.send(`42[11,${p},"bomb has been planted"]`);
 								for(let j = 0; j < r.length; j++){
 									if(!r[j].nick.startsWith('STIgnore‎')){
 										ws.send(`42[45,${p},["${r[j].id}",true]]`);
 									}
 								}
-								ws.send(`42[11,${p},"boom"]`);
 							}
 						} catch(err) {}
 						setTimeout(() => {
