@@ -12,7 +12,7 @@
 		small{margin-bottom: 4px;font-size: 14px}
 		button{background-color: #B7B78A;}
 		button:active{transform: scale(0.985);}
-		#bb button{width: 380px} 
+		#bb button{width: 180px} 
 		hr{width: 420px;border: none;height: 1px;background-color: #aaa;}
 	</style>
 </head>
@@ -21,11 +21,13 @@
 	<div id="grid">
 		<small>Server</small>
 		<small>Room</small>
+		<input type="text" id="sr" placeholder="5" value="5">
 		<input type="text" id="rm" placeholder="7100">
 	</div>
 	<div id="bb" style="margin-top: 0.5rem;">
+		<button id="iv">IV</button>
 		<button id="ab">AB</button>
-		<button onclick="j(document.getElementById('rm').value)" id="bt">JOIN</button>
+		<button onclick="j(document.getElementById('sr').value ,document.getElementById('rm').value)" id="bt">JOIN</button>
 	</div>
 <script>
 	let r = [];
@@ -38,7 +40,6 @@
 	let rooms = [];
 
 	const x569 = document.getElementById('rm');
-	const x791 = document.getElementById('bt');
 
 	function f(){
 		rooms = [];
@@ -58,8 +59,6 @@
 		const iv = setInterval(() => {
 			if(i != rooms.length){
 				x569.value = rooms[i];
-				x569.dispatchEvent(new Event('change'));
-				x791.click();
 				i++;
 			} else {
 				f();
@@ -68,38 +67,34 @@
 		}, 3000);
 	}
 
-	function j(b){
+	function j(a, b){
 		if(ws != '' && ws.readyState == 1){
 			ws.close();
 		}
 
-		fetch(`https://gartic.io/serverViewer?room=38${b}`).then(re => re.text()).then(dta => {
-			const sw = dta.slice(14,16);
-			ws = new WebSocket(`wss://server${sw}.gartic.io/socket.io/?EIO=3&transport=websocket`);
+		ws = new WebSocket(`wss://server0${a}.gartic.io/socket.io/?EIO=3&transport=websocket`);
 
-			ws.onopen = () => {
-				ws.send(`42[3,{"v":20000,"nick":"STIgnore‎${Math.floor(Math.random() * 960)}","avatar":0,"sala":"${b}"}]`);
-				ws.send(`42[46,1675119253574]`);
-			}
+		ws.onopen = () => {
+			ws.send(`42[3,{"v":20000,"nick":"ST‎${Math.floor(Math.random() * 960)}","avatar":0,"sala":"${b}"}]`);
+			ws.send(`42[46,1675119253574]`);
+		}
 
-			ws.onmessage = (m) => {
-				const d = JSON.parse(m.data.slice(2));
-				if(d[0] == 5){
-					p = d[2];
-					r = d[5];
-					for(let i = 0; i < r.length; i++){
-						if(!r[i].nick.startsWith('STIgnore‎')){
-							ws.send(`42[45,${p},["${r[i].id}",true]]`);
-						}
+		ws.onmessage = (m) => {
+			const d = JSON.parse(m.data.slice(2));
+			if(d[0] == 5){
+				p = d[2];
+				r = d[5];
+				for(let i = 0; i < r.length; i++){
+					if(!r[i].nick.startsWith('ST‎')){
+						ws.send(`42[45,${p},["${r[i].id}",true]]`);
 					}
 				}
-
-
-				if(d[0] == 23 && !d[1].nick.startsWith('STIgnore‎')){
-					ws.send(`42[45,${p},["${d[1].id}",true]]`);
-				}
 			}
-		});
+		}
+		
+		setInterval(() => {
+			ws.send(`2`);
+		}, 25000);
 	}
 </script>
 </body>
