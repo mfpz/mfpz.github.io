@@ -47,7 +47,7 @@
 		.then(dt => {
 			const ar = dt.filter(room => room.quant > 0);
 			for(let j = 0; j < ar.length; j++){
-				if(Math.floor(ar[j].max * 0.37 +1) <= (ar[j].max - ar[j].quant)){
+				if(Math.floor(ar[j].max * 0.37 +1) <= (ar[j].max - ar[j].quant)){ //I've created my own formula :D
 					rooms.push(ar[j].id);
 				}
 			}
