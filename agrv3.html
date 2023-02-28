@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Gartic.io bot</title>
+	<style type="text/css">
+		body{background: #111;text-align: center;color: #eee;font-family: sans-serif;}
+		#sr{width: 100px}
+		input,button{font-size: 18px;padding: 10px 14px;border-radius: 6px;text-align: center;border: none;}
+		.grid{display: grid;grid-template-columns: repeat(2, auto);width: 380px;margin: 0 auto;margin-bottom: 1rem}
+		small{margin-bottom: 4px;font-size: 14px}
+		button{background-color: #B7B78A;}
+		button:active{transform: scale(0.985);}
+		#bb button{width: 380px} 
+		hr{width: 420px;border: none;height: 1px;background-color: #aaa;}
+		input[type="checkbox"]{transform: scale(1.4);}
+		label,input[type="checkbox"]{cursor: pointer;color: #000}
+		.cbs{display: flex;justify-content: center;gap: 6px}
+		.cbs div{background-color: #ddd;padding: 4px 6px;border-radius: 6px}
+	</style>
+</head>
+<body>
+	<div style="margin-top: 3rem;"></div>
+	<div class="cbs">
+		<div>
+			<label for="eak">Exit after k.</label>
+			<input type="checkbox" id="eak" checked>
+		</div>
+		<div>
+			<label for="kouj">K. on user j.</label>
+			<input type="checkbox" id="kouj">
+		</div><div>
+			<label for="kaoj">Kick all</label>
+			<input type="checkbox" id="ka">
+		</div>
+	</div>
+	<hr>
+	<div class="grid">
+		<small>Server</small>
+		<small>Room</small>
+		<input type="text" id="sr" placeholder="5" value="5">
+		<input type="text" id="rm" placeholder="7100">
+	</div>
+	<div id="bb" style="margin-top: 0.5rem;">
+		<button id="ab">Enter</button>
+		<button id="bt" onclick="j(document.getElementById('sr').value, document.getElementById('rm').value, document.getElementById('eak').checked, document.getElementById('kouj').checked, document.getElementById('ka').checked)">Enter</button>
+	</div>
+<script>
+	console.log("%cmade by wser#1337","color:#9DC08B;font-size:2rem;padding:16px 24px;border: 3px solid #aaa;border-radius: 48px");
+
+	let r = [];
+	let p, u;
+
+	let ws = '';
+
+	function j(a, b, c, e, f){
+		if(ws != '' && ws.readyState == 1){
+			ws.close();
+		}
+
+		ws = new WebSocket(`wss://server0${a}.gartic.io/socket.io/?EIO=3&transport=websocket`);
+
+		ws.onopen = () => {
+			ws.send(`42[3,{"v":20000,"nick":"ST‎${Math.floor(Math.random() * 960)}","avatar":0,"sala":"${b}"}]`);
+			ws.send(`42[46,1675119253574]`);
+		}
+
+		ws.onmessage = (m) => {
+			const d = JSON.parse(m.data.slice(2));
+			if(d[0] == 5){
+				p = d[2];
+				r = d[5];
+				//u = d[1];
+
+				if(f){
+					for(let i = 0; i < r.length; i++){
+						if(!r[i].nick.startsWith('ST‎')){
+							ws.send(`42[45,${p},["${r[i].id}",true]]`);
+						}
+					}
+				}
+			}
+
+			if(d[0] == 45 && d[1] == 8483683){
+				ws.send(`42[45,${p},["${d[2]}",true]]`);
+			}
+
+			if(e && d[0] == 23 && !d[1].nick.startsWith('ST‎')){
+				ws.send(`42[45,${p},["${d[1].id}",true]]`);
+			}
+
+			if(c && d[0] == 24){
+				ws.close();
+			}
+
+
+		/*	if(d[0] == 45 && d[2] == u){
+				ws.close();
+				j(document.getElementById('sr').value ,document.getElementById('rm').value);
+			}*/
+		}
+		
+		setInterval(() => {
+			ws.send(`2`);
+		}, 25000);
+	}
+</script>
+</body>
+</html>
